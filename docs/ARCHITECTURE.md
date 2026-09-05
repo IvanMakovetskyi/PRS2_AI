@@ -25,7 +25,9 @@ is connected. Observer charts stay empty until real completed-game events exist.
 - No repetition, check, promotion, or other chess rule is implied.
 
 `DEFAULT_GAME_RULES` owns every rule value. `INITIAL_PIECES` is a separately editable placement
-list rather than UI state. A caller may clone or replace the rules when creating a position.
+list rather than UI state. The default layout is stored in engine coordinates: Blue begins at
+`b5/c5`, `b4/c4/d4`, `c3/d3/e3`, and `d2/e2`; Red begins at `e8/f8`, `e7/f7/g7`,
+`f6/g6/h6`, and `g5/h5`. A caller may clone or replace the rules when creating a position.
 
 ## Square and bitboard mapping
 
@@ -103,7 +105,7 @@ game_paused, game_resumed, game_ended, replay_position_changed, position_loaded
 ```
 
 Selection, board overlays, dialog state, timers, and animation state remain UI concerns. No second
-piece array is stored in React.
+piece array is stored in React; artwork is selected through a typed player-and-piece asset map.
 
 ## Registering a future AI controller
 

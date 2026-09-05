@@ -12,9 +12,10 @@ describe("workspace accessibility contracts", () => {
     expect(squares).toHaveLength(81);
     expect(new Set(squares.map((square) => square.getAttribute("aria-label"))).size).toBe(81);
 
-    squares[72]?.focus();
+    const startingPiece = screen.getByRole("gridcell", { name: "b5, blue paper" });
+    startingPiece.focus();
     await user.keyboard("{Enter}");
-    expect(squares[72]).toHaveAttribute("aria-selected", "true");
+    expect(startingPiece).toHaveAttribute("aria-selected", "true");
 
     const navigation = screen.getByRole("navigation", { name: "Workspace" });
     await user.click(within(navigation).getByRole("button", { name: "Match Lab" }));

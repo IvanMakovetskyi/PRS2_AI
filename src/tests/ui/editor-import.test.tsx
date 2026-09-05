@@ -28,7 +28,7 @@ describe("import and position editing", () => {
   it("imports a complete game with its history and replay cursor", async () => {
     const user = userEvent.setup();
     const imported = new GameSession(createInitialPosition());
-    imported.play(coordinateToSquare("a1"), coordinateToSquare("a2"));
+    imported.play(coordinateToSquare("b5"), coordinateToSquare("b6"));
     const gameData = imported.serialize();
     render(<App />);
 
@@ -42,8 +42,8 @@ describe("import and position editing", () => {
     expect(
       screen.queryByRole("dialog", { name: "Import a recorded game" }),
     ).not.toBeInTheDocument();
-    expect(screen.getByRole("gridcell", { name: "a2, blue rock" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /R a1–a2/ })).toHaveAttribute("aria-current", "step");
+    expect(screen.getByRole("gridcell", { name: "b6, blue paper" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /P b5–b6/ })).toHaveAttribute("aria-current", "step");
   });
 
   it("loads a validated custom position from serialized editor data", async () => {

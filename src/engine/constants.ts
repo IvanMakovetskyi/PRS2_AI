@@ -17,27 +17,30 @@ export const DEFEATED_BY = {
 
 /**
  * Editable default setup. a1=0, b1=1 ... i1=8, a2=9 ... i9=80.
- * Each side starts with three of every type; opposing target corners begin defended.
+ * The visual reference uses top-to-bottom rows, so row 0 maps to rank 9.
  */
 export const INITIAL_PIECES: readonly PiecePlacement[] = [
-  { square: coordinateToSquare("a1"), player: "blue", piece: "rock" },
-  { square: coordinateToSquare("b1"), player: "blue", piece: "paper" },
-  { square: coordinateToSquare("c1"), player: "blue", piece: "scissors" },
+  { square: coordinateToSquare("b5"), player: "blue", piece: "paper" },
+  { square: coordinateToSquare("c5"), player: "blue", piece: "scissors" },
+  { square: coordinateToSquare("b4"), player: "blue", piece: "rock" },
+  { square: coordinateToSquare("c4"), player: "blue", piece: "paper" },
+  { square: coordinateToSquare("d4"), player: "blue", piece: "scissors" },
+  { square: coordinateToSquare("c3"), player: "blue", piece: "rock" },
+  { square: coordinateToSquare("d3"), player: "blue", piece: "paper" },
+  { square: coordinateToSquare("e3"), player: "blue", piece: "scissors" },
   { square: coordinateToSquare("d2"), player: "blue", piece: "rock" },
   { square: coordinateToSquare("e2"), player: "blue", piece: "paper" },
-  { square: coordinateToSquare("f2"), player: "blue", piece: "scissors" },
-  { square: coordinateToSquare("g1"), player: "blue", piece: "rock" },
-  { square: coordinateToSquare("h1"), player: "blue", piece: "paper" },
-  { square: coordinateToSquare("i1"), player: "blue", piece: "scissors" },
-  { square: coordinateToSquare("a9"), player: "red", piece: "rock" },
-  { square: coordinateToSquare("b9"), player: "red", piece: "paper" },
-  { square: coordinateToSquare("c9"), player: "red", piece: "scissors" },
-  { square: coordinateToSquare("d8"), player: "red", piece: "rock" },
+
   { square: coordinateToSquare("e8"), player: "red", piece: "paper" },
-  { square: coordinateToSquare("f8"), player: "red", piece: "scissors" },
-  { square: coordinateToSquare("g9"), player: "red", piece: "rock" },
-  { square: coordinateToSquare("h9"), player: "red", piece: "paper" },
-  { square: coordinateToSquare("i9"), player: "red", piece: "scissors" },
+  { square: coordinateToSquare("f8"), player: "red", piece: "rock" },
+  { square: coordinateToSquare("e7"), player: "red", piece: "scissors" },
+  { square: coordinateToSquare("f7"), player: "red", piece: "paper" },
+  { square: coordinateToSquare("g7"), player: "red", piece: "rock" },
+  { square: coordinateToSquare("f6"), player: "red", piece: "scissors" },
+  { square: coordinateToSquare("g6"), player: "red", piece: "paper" },
+  { square: coordinateToSquare("h6"), player: "red", piece: "rock" },
+  { square: coordinateToSquare("g5"), player: "red", piece: "scissors" },
+  { square: coordinateToSquare("h5"), player: "red", piece: "paper" },
 ];
 
 export const DEFAULT_GAME_RULES: GameRules = Object.freeze({

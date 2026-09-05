@@ -11,6 +11,7 @@ import {
   type Move,
   type Square,
 } from "../../engine";
+import { PIECE_ASSETS } from "../pieceAssets";
 
 export interface BoardOverlays {
   occupancy: boolean;
@@ -32,8 +33,6 @@ interface GameBoardProps {
   overlays?: BoardOverlays;
   onSquarePress: (square: Square) => void;
 }
-
-const PIECE_SYMBOL = { rock: "R", paper: "P", scissors: "S" } as const;
 
 export function GameBoard({
   position,
@@ -74,6 +73,12 @@ export function GameBoard({
                 : position.rules.targetCorners.red === square
                   ? "red"
                   : undefined;
+            const targetClass =
+              targetPlayer === "blue"
+                ? "is-target--blue-destination"
+                : targetPlayer === "red"
+                  ? "is-target--red-destination"
+                  : undefined;
             const classes = [
               "board-square",
               (file + rank) % 2 === 0 ? "board-square--light" : "board-square--dark",
@@ -83,7 +88,8 @@ export function GameBoard({
               overlays.occupancy && occupant && "has-occupancy-overlay",
               overlays.legal && isLegal && "is-legal",
               overlays.captures && isCapture && "is-capture",
-              overlays.targets && targetPlayer && `is-target is-target--${targetPlayer}`,
+              overlays.targets && targetPlayer && "is-target",
+              overlays.targets && targetClass,
             ]
               .filter(Boolean)
               .join(" ");
@@ -109,7 +115,12 @@ export function GameBoard({
                 )}
                 {occupant && (
                   <span className={`piece piece--${occupant.player} piece--${occupant.piece}`}>
-                    <span aria-hidden="true">{PIECE_SYMBOL[occupant.piece]}</span>
+                    <img
+                      src={PIECE_ASSETS[occupant.player][occupant.piece]}
+                      alt=""
+                      aria-hidden="true"
+                      draggable={false}
+                    />
                     <span className="sr-only">
                       {occupant.player} {occupant.piece}
                     </span>
@@ -135,10 +146,10 @@ export function GameBoard({
       </div>
       <div className="target-legend" aria-label="Target corners">
         <span>
-          <i className="side-dot side-dot--red" /> Red target · a1
+          <i className="side-dot side-dot--red-target" /> Red target · a1
         </span>
         <span>
-          <i className="side-dot side-dot--blue" /> Blue target · i9
+          <i className="side-dot side-dot--blue-target" /> Blue target · i9
         </span>
       </div>
     </div>

@@ -16,49 +16,49 @@ describe("play workspace", () => {
     render(<App />);
 
     expect(screen.getAllByRole("gridcell")).toHaveLength(81);
-    await user.click(screen.getByRole("gridcell", { name: "a1, blue rock" }));
+    await user.click(screen.getByRole("gridcell", { name: "b5, blue paper" }));
 
-    const a2 = screen.getByRole("gridcell", { name: "a2, empty, legal move" });
-    const b2 = screen.getByRole("gridcell", { name: "b2, empty, legal move" });
-    expect(a2).toHaveClass("is-legal");
-    expect(b2).toHaveClass("is-legal");
+    const a6 = screen.getByRole("gridcell", { name: "a6, empty, legal move" });
+    const b6 = screen.getByRole("gridcell", { name: "b6, empty, legal move" });
+    expect(a6).toHaveClass("is-legal");
+    expect(b6).toHaveClass("is-legal");
 
-    await user.click(a2);
-    expect(screen.getByRole("gridcell", { name: "a2, blue rock" })).toBeInTheDocument();
+    await user.click(b6);
+    expect(screen.getByRole("gridcell", { name: "b6, blue paper" })).toBeInTheDocument();
     expect(screen.getAllByText("red to move").length).toBeGreaterThan(0);
-    expect(screen.getByRole("button", { name: /R a1–a2/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /P b5–b6/ })).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Undo" }));
-    expect(screen.getByRole("gridcell", { name: "a1, blue rock" })).toBeInTheDocument();
+    expect(screen.getByRole("gridcell", { name: "b5, blue paper" })).toBeInTheDocument();
     expect(screen.getAllByText("blue to move").length).toBeGreaterThan(0);
 
     await user.click(screen.getByRole("button", { name: "Redo" }));
-    expect(screen.getByRole("gridcell", { name: "a2, blue rock" })).toBeInTheDocument();
+    expect(screen.getByRole("gridcell", { name: "b6, blue paper" })).toBeInTheDocument();
   });
 
   it("keeps future moves while inspecting history and confirms a new branch", async () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(screen.getByRole("gridcell", { name: "a1, blue rock" }));
-    await user.click(screen.getByRole("gridcell", { name: "a2, empty, legal move" }));
-    await user.click(screen.getByRole("gridcell", { name: "a9, red rock" }));
-    await user.click(screen.getByRole("gridcell", { name: "a8, empty, legal move" }));
+    await user.click(screen.getByRole("gridcell", { name: "b5, blue paper" }));
+    await user.click(screen.getByRole("gridcell", { name: "b6, empty, legal move" }));
+    await user.click(screen.getByRole("gridcell", { name: "e8, red paper" }));
+    await user.click(screen.getByRole("gridcell", { name: "d9, empty, legal move" }));
 
     await user.click(screen.getByRole("button", { name: /Initial position/ }));
     expect(screen.getByText("Viewing ply 0. Future moves are preserved.")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /R a1–a2/ })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /R a9–a8/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /P b5–b6/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /P e8–d9/ })).toBeInTheDocument();
 
-    await user.click(screen.getByRole("gridcell", { name: "a1, blue rock" }));
-    await user.click(screen.getByRole("gridcell", { name: "b2, empty, legal move" }));
+    await user.click(screen.getByRole("gridcell", { name: "b5, blue paper" }));
+    await user.click(screen.getByRole("gridcell", { name: "a6, empty, legal move" }));
     const dialog = screen.getByRole("dialog", { name: "Create a new branch here?" });
     expect(dialog).toBeInTheDocument();
     await user.click(within(dialog).getByRole("button", { name: "Create branch" }));
 
     expect(screen.getByText("1 plies recorded")).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /R a9–a8/ })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /R a1–b2/ })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /P e8–d9/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /P b5–a6/ })).toBeInTheDocument();
   });
 
   it("renders exactly the legal and capture masks returned by the engine", () => {

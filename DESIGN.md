@@ -101,7 +101,7 @@ Platform-native selects are an intentional canonical choice; operating-system po
 
 ### Iconography
 
-Lucide's 1.75px rounded strokes support navigation and utilities. Rock, Paper, and Scissors use purpose-built CSS/letter symbols because the type distinction is game state, never decoration.
+Lucide's 1.75px rounded strokes support navigation and utilities. Rock, Paper, and Scissors use transparent PNG game pieces from `public/assets/pieces`, mapped by player color and piece type from the authoritative engine occupant data.
 
 ### Motion
 

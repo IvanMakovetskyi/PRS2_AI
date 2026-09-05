@@ -1,0 +1,22 @@
+{
+  "profile": "product-admin",
+  "sourceRoots": ["src"],
+  "locale": "en-US",
+  "canonicalMap": "UX-CONTRACT.md",
+  "requiredCapabilities": ["Select/Listbox", "Form", "Scrollbar", "Toast"],
+  "ownership": {
+    "Select/Listbox": "native"
+  },
+  "requiredCommands": ["unit", "ui", "accessibility", "premium"],
+  "commands": {
+    "unit": "npm test",
+    "ui": "npm run test:ui",
+    "accessibility": "npm run test:a11y",
+    "premium": "npm run verify:premium"
+  },
+  "evidence": {
+    "crudFullFlow": "src/tests/ui/game-flow.test.tsx",
+    "failurePaths": "src/tests/ui/editor-import.test.tsx"
+  }
+}
+

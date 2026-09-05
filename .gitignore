@@ -216,3 +216,16 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+premium-audit.json
+*.local
+.env*
+!.env.example
+.DS_Store
+Thumbs.db
+*.tsbuildinfo

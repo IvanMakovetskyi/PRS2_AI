@@ -15,6 +15,7 @@
     "benchmark": "vite-node scripts/benchmark.ts",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
+    "verify:design": "npx -p @google/design.md designmd lint DESIGN.md",
     "verify:premium": "python \"C:/Users/im061/.codex/plugins/cache/openai-curated-remote/frontend-design-premium/1.4.0/skills/frontend-design-premium/scripts/audit_project.py\" . --mode strict --no-write"
   },
   "dependencies": {

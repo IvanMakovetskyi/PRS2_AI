@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Activity, Beaker, Gamepad2, Shapes } from "lucide-react";
-import { Panel } from "./components/Panel";
 import { PlayPage } from "./pages/PlayPage";
+import { MatchLabPage } from "./pages/MatchLabPage";
+import { ObserverPage } from "./pages/ObserverPage";
 
 type Page = "play" | "lab" | "observer";
 
@@ -50,18 +51,9 @@ export default function App() {
         </span>
       </header>
       <main id="main" className="app-main" tabIndex={-1}>
-        {page === "play" ? (
-          <PlayPage />
-        ) : (
-          <Panel
-            title={PAGE_LABEL[page]}
-            eyebrow="Future AI workspace"
-            className="placeholder-page"
-          >
-            <p>No AI provider installed.</p>
-            <span>The deterministic engine and controller interfaces are ready.</span>
-          </Panel>
-        )}
+        {page === "play" && <PlayPage />}
+        {page === "lab" && <MatchLabPage />}
+        {page === "observer" && <ObserverPage />}
       </main>
     </div>
   );

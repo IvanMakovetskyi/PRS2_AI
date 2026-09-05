@@ -55,4 +55,3 @@ export function runEngineBenchmarks(iterations = 500): BenchmarkResult[] {
     benchmarkMoveList(position, [move], iterations),
   ];
 }
-

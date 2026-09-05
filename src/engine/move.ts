@@ -22,4 +22,3 @@ export function movesEqual(left: Move, right: Move): boolean {
     left.piece === right.piece
   );
 }
-

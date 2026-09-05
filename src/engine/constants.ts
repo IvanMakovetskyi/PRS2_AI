@@ -100,4 +100,3 @@ export function allPieceBoardEntries(pieceBoards: PieceBitboards) {
     PIECE_TYPES.map((piece) => ({ player, piece, board: pieceBoards[player][piece] })),
   );
 }
-

@@ -22,6 +22,7 @@ export function calculateGameResult(position: Readonly<GamePosition>): GameResul
 }
 
 export function getGameResult(position: Readonly<GamePosition>): GameResult {
-  return position.result.type === "ongoing" ? calculateGameResult(position) : { ...position.result };
+  return position.result.type === "ongoing"
+    ? calculateGameResult(position)
+    : { ...position.result };
 }
-

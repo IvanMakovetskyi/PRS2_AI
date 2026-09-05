@@ -11,4 +11,3 @@ export function moveToNotation(move: Move): string {
   const separator = move.capturedPiece ? "×" : "–";
   return `${PIECE_MARK[move.piece]} ${squareToCoordinate(move.from)}${separator}${squareToCoordinate(move.to)}`;
 }
-

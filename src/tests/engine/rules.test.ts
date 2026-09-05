@@ -128,7 +128,10 @@ describe("game results", () => {
         { square: coordinateToSquare("h8"), player: "red", piece: "paper" },
       ],
     });
-    applyMove(wrongCorner, createMove(wrongCorner, coordinateToSquare("b1"), coordinateToSquare("a1")));
+    applyMove(
+      wrongCorner,
+      createMove(wrongCorner, coordinateToSquare("b1"), coordinateToSquare("a1")),
+    );
     expect(wrongCorner.result).toEqual({ type: "ongoing" });
   });
 

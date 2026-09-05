@@ -12,4 +12,3 @@ export interface PlayerController {
   readonly kind: "human" | "ai";
   chooseMove(position: Readonly<GamePosition>, context: MoveRequestContext): Promise<Move>;
 }
-

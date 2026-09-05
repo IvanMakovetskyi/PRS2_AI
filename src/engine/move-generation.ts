@@ -18,10 +18,7 @@ export interface MoveMasks {
   captures: Bitboard81;
 }
 
-export function getMoveMasks(
-  position: Readonly<GamePosition>,
-  square: Square,
-): MoveMasks {
+export function getMoveMasks(position: Readonly<GamePosition>, square: Square): MoveMasks {
   assertSquare(square);
   const moving = getPieceAt(position, square);
   if (!moving || moving.player !== position.activePlayer || position.result.type !== "ongoing") {
@@ -39,10 +36,7 @@ export function getMoveMasks(
   };
 }
 
-export function generateMovesFrom(
-  position: Readonly<GamePosition>,
-  square: Square,
-): Move[] {
+export function generateMovesFrom(position: Readonly<GamePosition>, square: Square): Move[] {
   const moving = getPieceAt(position, square);
   if (!moving) return [];
   const masks = getMoveMasks(position, square);
@@ -71,11 +65,7 @@ export function generateLegalMoves(position: Readonly<GamePosition>): Move[] {
   return moves;
 }
 
-export function isLegalMove(
-  position: Readonly<GamePosition>,
-  from: Square,
-  to: Square,
-): boolean {
+export function isLegalMove(position: Readonly<GamePosition>, from: Square, to: Square): boolean {
   if (position.result.type !== "ongoing") return false;
   const moving = getPieceAt(position, from);
   if (!moving || moving.player !== position.activePlayer) return false;
@@ -91,4 +81,3 @@ export function hasAnyLegalMove(position: Readonly<GamePosition>): boolean {
   }
   return false;
 }
-

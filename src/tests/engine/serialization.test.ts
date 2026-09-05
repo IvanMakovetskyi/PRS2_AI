@@ -54,4 +54,3 @@ describe("serialization and hashing", () => {
     expect(hashPosition(restored.position)).toBe(hashPosition(session.position));
   });
 });
-

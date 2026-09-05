@@ -26,4 +26,3 @@ export class GameEventStream {
     for (const listener of this.listeners) listener(event);
   }
 }
-

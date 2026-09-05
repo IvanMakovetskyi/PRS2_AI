@@ -19,7 +19,8 @@ export class AiProviderRegistry {
   private readonly providers = new Map<string, AiProviderRegistration>();
 
   register(provider: AiProviderRegistration): () => void {
-    if (this.providers.has(provider.id)) throw new Error(`AI provider ${provider.id} is registered.`);
+    if (this.providers.has(provider.id))
+      throw new Error(`AI provider ${provider.id} is registered.`);
     this.providers.set(provider.id, provider);
     return () => this.providers.delete(provider.id);
   }
@@ -36,4 +37,3 @@ export class AiProviderRegistry {
 }
 
 export const aiProviderRegistry = new AiProviderRegistry();
-

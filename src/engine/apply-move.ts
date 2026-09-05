@@ -49,7 +49,8 @@ export function applyMove(position: GamePosition, move: Move): UndoData {
     resolved.to,
   );
   if (resolved.capturedPiece) {
-    const capturedBoard = position.pieces[resolved.capturedPiece.player][resolved.capturedPiece.piece];
+    const capturedBoard =
+      position.pieces[resolved.capturedPiece.player][resolved.capturedPiece.piece];
     position.pieces[resolved.capturedPiece.player][resolved.capturedPiece.piece] = clearSquare(
       capturedBoard,
       resolved.to,
@@ -67,10 +68,7 @@ export function applyMove(position: GamePosition, move: Move): UndoData {
 export function undoMove(position: GamePosition, undo: UndoData): void {
   const { move } = undo;
   const movedBoard = position.pieces[move.player][move.piece];
-  position.pieces[move.player][move.piece] = setSquare(
-    clearSquare(movedBoard, move.to),
-    move.from,
-  );
+  position.pieces[move.player][move.piece] = setSquare(clearSquare(movedBoard, move.to), move.from);
   if (move.capturedPiece) {
     const capturedBoard = position.pieces[move.capturedPiece.player][move.capturedPiece.piece];
     position.pieces[move.capturedPiece.player][move.capturedPiece.piece] = setSquare(
@@ -84,4 +82,3 @@ export function undoMove(position: GamePosition, undo: UndoData): void {
   position.totalPlyCount = undo.previousTotalPlyCount;
   position.result = { ...undo.previousResult };
 }
-

@@ -117,4 +117,3 @@ Copy is direct and technical without sounding clinical. Actions name outcomes: â
 - **Do:** Pair every player color with a name, token shape, or icon.
 - **Don't:** Spend chartreuse on decorative borders that compete with legal moves.
 - **Don't:** hide engine truth behind vague summaries when exact state is available.
-

@@ -20,4 +20,3 @@ export function hashPositionValue(position: Readonly<GamePosition>): bigint {
 export function hashPosition(position: Readonly<GamePosition>): string {
   return hashPositionValue(position).toString(16).padStart(16, "0");
 }
-

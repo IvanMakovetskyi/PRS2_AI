@@ -54,4 +54,3 @@ describe("human game integration", () => {
     expect(session.position.result).toEqual({ type: "draw", reason: "no-capture-limit" });
   });
 });
-

@@ -56,7 +56,7 @@ export function hasSquare(board: Bitboard81, square: Square): boolean {
 }
 
 export function andBoards(left: Bitboard81, right: Bitboard81): Bitboard81 {
-  return { low: left.low & right.low, high: (left.high & right.high) & HIGH_MASK };
+  return { low: left.low & right.low, high: left.high & right.high & HIGH_MASK };
 }
 
 export function orBoards(left: Bitboard81, right: Bitboard81): Bitboard81 {
@@ -176,4 +176,3 @@ export function debugBitboard(board: Bitboard81): BitboardDebugData {
     squares: toSquares(board),
   };
 }
-

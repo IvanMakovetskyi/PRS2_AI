@@ -13,11 +13,11 @@
 
 The current assignment is the authoritative game-rule and product-behavior brief. No permissions, billing, privacy, retention, or legal flows exist in this phase.
 
-| Domain / scope | Authoritative source | Source type | Reviewed date |
-|---|---|---|---|
-| Game lifecycle and rules | Current assignment | Product brief | 2026-09-04 |
-| AI exclusions | Current assignment | Product brief | 2026-09-04 |
-| Import/export lifecycle | Current assignment | Product brief | 2026-09-04 |
+| Domain / scope           | Authoritative source | Source type   | Reviewed date |
+| ------------------------ | -------------------- | ------------- | ------------- |
+| Game lifecycle and rules | Current assignment   | Product brief | 2026-09-04    |
+| AI exclusions            | Current assignment   | Product brief | 2026-09-04    |
+| Import/export lifecycle  | Current assignment   | Product brief | 2026-09-04    |
 
 ## Visual contract
 
@@ -28,23 +28,23 @@ The current assignment is the authoritative game-rule and product-behavior brief
 
 ## Canonical UI Map
 
-| Capability | Canonical owner | Source of truth | Allowed variants | Verification |
-|---|---|---|---|---|
-| Select/Listbox | Shared `SelectField` using native select | UX contract | native | keyboard + browser popup |
-| Form | Shared `Field` components and explicit validation | UX contract | editor / lab | integration tests |
-| Scrollbar | Global application stylesheet | DESIGN.md | stable-gutter geometry | computed/browser inspection |
-| Toast | Shared live status region | UX contract | success / warning / info / error | accessibility test |
-| Game lifecycle | `GameSession` service | Product brief | live / history branch | engine + UI integration |
+| Capability     | Canonical owner                                   | Source of truth | Allowed variants                 | Verification                |
+| -------------- | ------------------------------------------------- | --------------- | -------------------------------- | --------------------------- |
+| Select/Listbox | Shared `SelectField` using native select          | UX contract     | native                           | keyboard + browser popup    |
+| Form           | Shared `Field` components and explicit validation | UX contract     | editor / lab                     | integration tests           |
+| Scrollbar      | Global application stylesheet                     | DESIGN.md       | stable-gutter geometry           | computed/browser inspection |
+| Toast          | Shared live status region                         | UX contract     | success / warning / info / error | accessibility test          |
+| Game lifecycle | `GameSession` service                             | Product brief   | live / history branch            | engine + UI integration     |
 
 ## Component behavior
 
-| Component | Default | Hover | Focus | Active | Disabled | Busy | Error |
-|---|---|---|---|---|---|---|---|
-| Button | tonal/outline | brighter border | chartreuse ring | inset | dim + reason | stable spinner | adjacent status |
-| Icon button | labeled icon | raised surface | chartreuse ring | inset | dim + reason | stable | adjacent status |
-| Input/select | dark field | border lift | chartreuse ring | n/a | dim | n/a | text + aria-invalid |
-| Textarea | fixed resize, scroll | border lift | chartreuse ring | n/a | dim | n/a | text + aria-invalid |
-| History list | numbered moves | surface lift | chartreuse ring | current marker | n/a | n/a | persistent import error |
+| Component    | Default              | Hover           | Focus           | Active         | Disabled     | Busy           | Error                   |
+| ------------ | -------------------- | --------------- | --------------- | -------------- | ------------ | -------------- | ----------------------- |
+| Button       | tonal/outline        | brighter border | chartreuse ring | inset          | dim + reason | stable spinner | adjacent status         |
+| Icon button  | labeled icon         | raised surface  | chartreuse ring | inset          | dim + reason | stable         | adjacent status         |
+| Input/select | dark field           | border lift     | chartreuse ring | n/a            | dim          | n/a            | text + aria-invalid     |
+| Textarea     | fixed resize, scroll | border lift     | chartreuse ring | n/a            | dim          | n/a            | text + aria-invalid     |
+| History list | numbered moves       | surface lift    | chartreuse ring | current marker | n/a          | n/a            | persistent import error |
 
 ## Dataset navigation
 
@@ -52,14 +52,14 @@ Move history and received observer games are bounded by the current session/conf
 
 ## Flow ledger
 
-| Operation | Trigger | Pending | Success destination | Success feedback | Failure recovery | Focus outcome | Source ref |
-|---|---|---|---|---|---|---|---|
-| Make move | Board square | piece animation | live position | event/status update | illegal target feedback | moved square | Product brief |
-| Restart | Restart | confirmation dialog | initial position | status update | cancel retains game | board | Product brief |
-| Import game | Import game | dialog button busy | imported live state | status update | dialog retains text/error | board or invalid field | Product brief |
-| Load editor | Load position | validation | live position | status update | inline errors retained | board or first error | Product brief |
-| Branch history | Make historical move | confirmation dialog | new live branch | branch status | cancel retains history view | board | Product brief |
-| Save lab config | Save configuration | immediate local write | same screen | saved status | in-page storage error | save control | Product brief |
+| Operation       | Trigger              | Pending               | Success destination | Success feedback    | Failure recovery            | Focus outcome          | Source ref    |
+| --------------- | -------------------- | --------------------- | ------------------- | ------------------- | --------------------------- | ---------------------- | ------------- |
+| Make move       | Board square         | piece animation       | live position       | event/status update | illegal target feedback     | moved square           | Product brief |
+| Restart         | Restart              | confirmation dialog   | initial position    | status update       | cancel retains game         | board                  | Product brief |
+| Import game     | Import game          | dialog button busy    | imported live state | status update       | dialog retains text/error   | board or invalid field | Product brief |
+| Load editor     | Load position        | validation            | live position       | status update       | inline errors retained      | board or first error   | Product brief |
+| Branch history  | Make historical move | confirmation dialog   | new live branch     | branch status       | cancel retains history view | board                  | Product brief |
+| Save lab config | Save configuration   | immediate local write | same screen         | saved status        | in-page storage error       | save control           | Product brief |
 
 ## Navigation and responsive behavior
 
@@ -96,4 +96,3 @@ No permission model exists. Clipboard actions expose full non-secret engine stat
 - Required: format check, ESLint, TypeScript, Vitest unit/integration/accessibility, production build, strict premium audit, DESIGN.md lint.
 - Browser matrix: Chromium desktop and narrow viewport; keyboard flow; reduced motion; empty/error/success states.
 - Canonical sibling comparison: Play, Match Lab, and Observer all use the same shell, buttons, fields, panels, dialogs, and status region.
-

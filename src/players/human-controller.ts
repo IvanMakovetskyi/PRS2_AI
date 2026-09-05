@@ -25,7 +25,13 @@ export class HumanController implements PlayerController {
         this.pending = undefined;
         reject(new DOMException("Move request aborted.", "AbortError"));
       };
-      this.pending = { resolve, reject, legalMoves: context.legalMoves, signal: context.signal, abort };
+      this.pending = {
+        resolve,
+        reject,
+        legalMoves: context.legalMoves,
+        signal: context.signal,
+        abort,
+      };
       context.signal.addEventListener("abort", abort, { once: true });
     });
   }
@@ -50,4 +56,3 @@ export class HumanController implements PlayerController {
     this.pending = undefined;
   }
 }
-

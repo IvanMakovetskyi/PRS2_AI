@@ -105,4 +105,3 @@ export interface PositionValidationResult {
 
 export const PLAYERS: readonly Player[] = ["blue", "red"];
 export const PIECE_TYPES: readonly PieceType[] = ["rock", "paper", "scissors"];
-

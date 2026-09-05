@@ -194,7 +194,7 @@ export function PositionEditor({ open, position, onOpenChange, onLoad }: Positio
           </label>
           <textarea
             id="editor-serialized"
-            className="code-textarea code-textarea--editor"
+            className="code-textarea code-textarea--editor resize-none"
             value={serialized}
             onChange={(event) => {
               setSerialized(event.target.value);

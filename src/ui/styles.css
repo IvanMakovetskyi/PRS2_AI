@@ -1081,6 +1081,10 @@ p {
   background: #110c1d;
 }
 
+.resize-none {
+  resize: none;
+}
+
 .field input,
 .field select {
   min-height: 40px;

@@ -52,7 +52,7 @@ export function ImportGameDialog({ open, onOpenChange, onImport }: ImportGameDia
         <textarea
           ref={textareaRef}
           id="game-import-data"
-          className="code-textarea"
+          className="code-textarea resize-none"
           value={data}
           onChange={(event) => {
             setData(event.target.value);

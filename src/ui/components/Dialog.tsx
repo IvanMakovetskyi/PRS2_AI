@@ -1,6 +1,6 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
-import type { ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 
 interface DialogProps {
   open: boolean;
@@ -23,6 +23,12 @@ export function Dialog({
   initialFocusRef,
   size = "sm",
 }: DialogProps) {
+  const returnFocusRef = useRef<HTMLElement | null>(null);
+  if (open && returnFocusRef.current === null && typeof document !== "undefined") {
+    const activeElement = document.activeElement;
+    returnFocusRef.current = activeElement instanceof HTMLElement ? activeElement : null;
+  }
+
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
@@ -34,6 +40,12 @@ export function Dialog({
               event.preventDefault();
               initialFocusRef.current.focus();
             }
+          }}
+          onCloseAutoFocus={(event) => {
+            event.preventDefault();
+            const returnTarget = returnFocusRef.current;
+            returnFocusRef.current = null;
+            returnTarget?.focus();
           }}
         >
           <header className="dialog-header">

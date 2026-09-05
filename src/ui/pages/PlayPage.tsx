@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import {
+  generateLegalMoves,
   generateMovesFrom,
   getMoveMasks,
   getPieceAt,
@@ -12,18 +13,37 @@ import { Dialog } from "../components/Dialog";
 import { GameBoard } from "../components/GameBoard";
 import { GameControls } from "../components/GameControls";
 import { GameInfo } from "../components/GameInfo";
+import { EngineInspector } from "../components/EngineInspector";
+import { ImportGameDialog } from "../components/ImportGameDialog";
 import { MoveHistory } from "../components/MoveHistory";
+import { PositionEditor } from "../components/PositionEditor";
 import { StatusToast, type StatusMessage } from "../components/StatusToast";
 import { useGameClock } from "../hooks/useGameClock";
 import { useGameSession } from "../hooks/useGameSession";
 
+interface PendingBranch {
+  from: Square;
+  to: Square;
+  ply: number;
+}
+
 export function PlayPage() {
-  const { session } = useGameSession();
+  const { session, replaceSession } = useGameSession();
   const [selected, setSelected] = useState<Square>();
   const [illegalSquare, setIllegalSquare] = useState<Square>();
   const [flipped, setFlipped] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [resetOpen, setResetOpen] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
+  const [editorOpen, setEditorOpen] = useState(false);
+  const [pendingBranch, setPendingBranch] = useState<PendingBranch>();
+  const [overlays, setOverlays] = useState({
+    occupancy: false,
+    legal: true,
+    captures: true,
+    targets: true,
+    indices: false,
+  });
   const [status, setStatus] = useState<StatusMessage>();
   const cancelResetRef = useRef<HTMLButtonElement>(null);
   const clock = useGameClock(session);
@@ -31,6 +51,11 @@ export function PlayPage() {
     () => (selected === undefined ? undefined : getMoveMasks(session.position, selected)),
     [selected, session.position],
   );
+  const moveGenerationMs = useMemo(() => {
+    const started = performance.now();
+    generateLegalMoves(session.position);
+    return performance.now() - started;
+  }, [session.position]);
   const lastMove = session.history[session.currentPly - 1]?.move;
 
   const announce = (text: string, tone: StatusMessage["tone"] = "info") => {
@@ -64,7 +89,7 @@ export function PlayPage() {
       return;
     }
     if (session.currentPly !== session.livePly) {
-      announce("Return to live or create a branch before moving from history.", "warning");
+      setPendingBranch({ from: selected, to: square, ply: session.currentPly });
       return;
     }
     const record = session.play(selected, square);
@@ -102,6 +127,15 @@ export function PlayPage() {
     }
   };
 
+  const createBranch = () => {
+    if (!pendingBranch) return;
+    session.branchAt(pendingBranch.ply);
+    const record = session.play(pendingBranch.from, pendingBranch.to);
+    setPendingBranch(undefined);
+    clearSelection();
+    announce(`Created branch at ply ${session.currentPly - 1}. ${record.notation}`, "success");
+  };
+
   return (
     <>
       <div className="play-layout">
@@ -125,6 +159,7 @@ export function PlayPage() {
             illegalSquare={illegalSquare}
             flipped={flipped}
             disabled={session.position.result.type !== "ongoing" || session.isPaused}
+            overlays={overlays}
             onSquarePress={handleSquare}
           />
           <GameControls
@@ -145,10 +180,10 @@ export function PlayPage() {
             onRestart={() => setResetOpen(true)}
             onPauseToggle={() => (session.isPaused ? session.resume() : session.pause())}
             onFlip={() => setFlipped((value) => !value)}
-            onImport={() => announce("Import panel is available in the next workspace section.")}
+            onImport={() => setImportOpen(true)}
             onExport={exportGame}
             onCopy={() => void copyPosition()}
-            onEdit={() => announce("Position editor is available in the next workspace section.")}
+            onEdit={() => setEditorOpen(true)}
             onReturnLive={() => {
               session.returnToLive();
               clearSelection();
@@ -178,6 +213,16 @@ export function PlayPage() {
           />
         </aside>
       </div>
+      <EngineInspector
+        position={session.position}
+        selectedLegal={masks?.legal}
+        selectedCaptures={masks?.captures}
+        lastEvent={session.lastEvent}
+        lastRecord={session.history[session.currentPly - 1]}
+        moveGenerationMs={moveGenerationMs}
+        overlays={overlays}
+        onOverlayChange={(name, value) => setOverlays((current) => ({ ...current, [name]: value }))}
+      />
       <Dialog
         open={resetOpen}
         onOpenChange={setResetOpen}
@@ -197,6 +242,44 @@ export function PlayPage() {
       >
         <p>You have {session.history.length} recorded plies in this game.</p>
       </Dialog>
+      <Dialog
+        open={Boolean(pendingBranch)}
+        onOpenChange={(open) => {
+          if (!open) setPendingBranch(undefined);
+        }}
+        title="Create a new branch here?"
+        description={`Moves after ply ${pendingBranch?.ply ?? 0} will be removed from this line. The original export is not changed unless you export again.`}
+        footer={
+          <>
+            <Button onClick={() => setPendingBranch(undefined)}>Keep history</Button>
+            <Button intent="warning" emphasis="solid" onClick={createBranch}>
+              Create branch
+            </Button>
+          </>
+        }
+      >
+        <p>This move starts a new continuation from the historical position you are viewing.</p>
+      </Dialog>
+      <ImportGameDialog
+        open={importOpen}
+        onOpenChange={setImportOpen}
+        onImport={(nextSession) => {
+          replaceSession(nextSession);
+          clearSelection();
+          announce("Game imported with its complete move history.", "success");
+        }}
+      />
+      <PositionEditor
+        open={editorOpen}
+        onOpenChange={setEditorOpen}
+        position={session.position}
+        onLoad={(position) => {
+          session.loadPosition(position);
+          setEditorOpen(false);
+          clearSelection();
+          announce("Custom position loaded as a new game.", "success");
+        }}
+      />
       <StatusToast message={status} />
     </>
   );

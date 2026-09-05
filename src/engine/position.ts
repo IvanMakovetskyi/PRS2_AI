@@ -1,4 +1,11 @@
-import { EMPTY_BITBOARD, hasSquare, orBoards, populationCount, setSquare } from "./bitboard";
+import {
+  clearSquare,
+  EMPTY_BITBOARD,
+  hasSquare,
+  orBoards,
+  populationCount,
+  setSquare,
+} from "./bitboard";
 import { cloneRules, createEmptyPieceBitboards, DEFAULT_GAME_RULES } from "./constants";
 import type {
   Bitboard81,
@@ -24,10 +31,7 @@ export function opponentOf(player: Player): Player {
   return player === "blue" ? "red" : "blue";
 }
 
-export function calculatePlayerOccupancy(
-  pieces: PieceBitboards,
-  player: Player,
-): Bitboard81 {
+export function calculatePlayerOccupancy(pieces: PieceBitboards, player: Player): Bitboard81 {
   return orBoards(orBoards(pieces[player].rock, pieces[player].paper), pieces[player].scissors);
 }
 
@@ -136,3 +140,41 @@ export function emptyOccupancy(): Bitboard81 {
   return EMPTY_BITBOARD;
 }
 
+export function placePiece(
+  position: Readonly<GamePosition>,
+  square: Square,
+  player: Player,
+  piece: PieceType,
+): GamePosition {
+  const next = removePiece(position, square);
+  next.pieces[player][piece] = setSquare(next.pieces[player][piece], square);
+  refreshOccupancy(next);
+  next.result = { type: "ongoing" };
+  return next;
+}
+
+export function removePiece(position: Readonly<GamePosition>, square: Square): GamePosition {
+  const next = clonePosition(position);
+  const occupant = getPieceAt(next, square);
+  if (occupant) {
+    next.pieces[occupant.player][occupant.piece] = clearSquare(
+      next.pieces[occupant.player][occupant.piece],
+      square,
+    );
+    refreshOccupancy(next);
+  }
+  next.result = { type: "ongoing" };
+  return next;
+}
+
+export function updatePositionMetadata(
+  position: Readonly<GamePosition>,
+  metadata: Partial<Pick<GamePosition, "activePlayer" | "noCapturePlyCount" | "totalPlyCount">>,
+): GamePosition {
+  const next = clonePosition(position);
+  if (metadata.activePlayer !== undefined) next.activePlayer = metadata.activePlayer;
+  if (metadata.noCapturePlyCount !== undefined) next.noCapturePlyCount = metadata.noCapturePlyCount;
+  if (metadata.totalPlyCount !== undefined) next.totalPlyCount = metadata.totalPlyCount;
+  next.result = { type: "ongoing" };
+  return next;
+}

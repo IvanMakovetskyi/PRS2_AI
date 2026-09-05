@@ -1,6 +1,7 @@
 import { assertValidBitboard, boardsEqual, EMPTY_BITBOARD, orBoards } from "./bitboard";
 import { allPieceBoardEntries } from "./constants";
 import { calculateGameResult } from "./game-status";
+import { isValidSquare } from "./coordinates";
 import type { GamePosition, PositionValidationError, PositionValidationResult } from "./types";
 
 export interface ValidationOptions {
@@ -55,6 +56,15 @@ export function validatePosition(
     errors.push({
       code: "invalid-counter",
       message: "Ply counters must be non-negative whole numbers.",
+    });
+  }
+  if (
+    !isValidSquare(position.rules.targetCorners.blue) ||
+    !isValidSquare(position.rules.targetCorners.red)
+  ) {
+    errors.push({
+      code: "invalid-bitboard",
+      message: "Target corners must be valid squares from 0 through 80.",
     });
   }
   if (!options.allowCompleted && errors.length === 0) {

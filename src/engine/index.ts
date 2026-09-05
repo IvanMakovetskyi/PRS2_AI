@@ -1,4 +1,5 @@
 export * from "./apply-move";
+export * from "./benchmarks";
 export * from "./bitboard";
 export * from "./constants";
 export * from "./coordinates";
@@ -11,4 +12,3 @@ export * from "./position";
 export * from "./serialization";
 export * from "./types";
 export * from "./validation";
-

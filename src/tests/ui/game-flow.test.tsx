@@ -99,4 +99,22 @@ describe("play workspace", () => {
     );
     expect(screen.getByRole("gridcell", { name: "c4, red paper" })).not.toHaveClass("is-legal");
   });
+
+  it("persists Match Lab configuration without inventing AI execution", async () => {
+    window.localStorage.clear();
+    const user = userEvent.setup();
+    const firstRender = render(<App />);
+    await user.click(screen.getByRole("button", { name: "Match Lab" }));
+    const games = screen.getByLabelText("Number of games");
+    await user.clear(games);
+    await user.type(games, "12");
+    await user.click(screen.getByRole("button", { name: "Save configuration" }));
+    expect(screen.getByRole("status")).toHaveTextContent("Configuration saved in this browser.");
+    expect(screen.getByRole("button", { name: "Start" })).toBeDisabled();
+    firstRender.unmount();
+
+    render(<App />);
+    await user.click(screen.getByRole("button", { name: "Match Lab" }));
+    expect(screen.getByLabelText("Number of games")).toHaveValue(12);
+  });
 });

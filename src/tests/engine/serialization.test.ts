@@ -53,4 +53,12 @@ describe("serialization and hashing", () => {
     expect(restored.currentPly).toBe(1);
     expect(hashPosition(restored.position)).toBe(hashPosition(session.position));
   });
+
+  it("rejects malformed rule booleans instead of coercing them", () => {
+    const data = JSON.parse(serializePosition(createCustomPosition())) as {
+      rules: { noLegalMovesIsDraw: unknown };
+    };
+    data.rules.noLegalMovesIsDraw = "false";
+    expect(() => deserializePosition(data)).toThrow("must be true or false");
+  });
 });

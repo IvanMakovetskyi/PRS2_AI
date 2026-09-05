@@ -3,7 +3,6 @@ import {
   getPieceAt,
   getPieceCounts,
   hashPosition,
-  populationCount,
   squareToCoordinate,
   type GamePosition,
   type Move,
@@ -31,6 +30,7 @@ function resultLabel(position: Readonly<GamePosition>): string {
 
 export function GameInfo({ position, initialPosition, selected, lastMove, clock }: GameInfoProps) {
   const counts = getPieceCounts(position);
+  const initialCounts = getPieceCounts(initialPosition);
   const selectedPiece = selected === undefined ? undefined : getPieceAt(position, selected);
   const legalCount = generateLegalMoves(position).length;
   return (
@@ -81,13 +81,9 @@ export function GameInfo({ position, initialPosition, selected, lastMove, clock 
             <span>P {counts[player].paper}</span>
             <span>S {counts[player].scissors}</span>
             <span className="muted">
-              captured{" "}
-              {Math.max(
-                0,
-                populationCount(
-                  initialPosition[player === "blue" ? "blueOccupancy" : "redOccupancy"],
-                ) - populationCount(position[player === "blue" ? "blueOccupancy" : "redOccupancy"]),
-              )}
+              captured R {Math.max(0, initialCounts[player].rock - counts[player].rock)} · P{" "}
+              {Math.max(0, initialCounts[player].paper - counts[player].paper)} · S{" "}
+              {Math.max(0, initialCounts[player].scissors - counts[player].scissors)}
             </span>
           </div>
         ))}

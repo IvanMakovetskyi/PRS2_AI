@@ -1,5 +1,6 @@
 import { applyMove, undoMove } from "./apply-move";
-import { clonePosition, createInitialPosition } from "./position";
+import { coordinateToSquare } from "./coordinates";
+import { clonePosition, createCustomPosition, createInitialPosition } from "./position";
 import { generateLegalMoves } from "./move-generation";
 import { hashPosition } from "./hash";
 import { serializePosition } from "./serialization";
@@ -43,6 +44,17 @@ export function runEngineBenchmarks(iterations = 500): BenchmarkResult[] {
   const position = createInitialPosition();
   const move = generateLegalMoves(position)[0];
   if (!move) throw new Error("Initial position unexpectedly has no legal moves.");
+  const suppliedGameStart = createCustomPosition({
+    activePlayer: "blue",
+    pieces: [
+      { square: coordinateToSquare("h8"), player: "blue", piece: "paper" },
+      { square: coordinateToSquare("a8"), player: "red", piece: "rock" },
+    ],
+  });
+  const suppliedGame = generateLegalMoves(suppliedGameStart).filter(
+    (candidate) => candidate.to === coordinateToSquare("i9"),
+  );
+  if (suppliedGame.length !== 1) throw new Error("Benchmark game is not a unique legal win.");
   return [
     measure("legal move generation", iterations, () => void generateLegalMoves(position)),
     measure("apply + undo", iterations, () => {
@@ -52,6 +64,6 @@ export function runEngineBenchmarks(iterations = 500): BenchmarkResult[] {
     measure("position clone", iterations, () => void clonePosition(position)),
     measure("position hash", iterations, () => void hashPosition(position)),
     measure("serialization", iterations, () => void serializePosition(position)),
-    benchmarkMoveList(position, [move], iterations),
+    benchmarkMoveList(suppliedGameStart, suppliedGame, iterations),
   ];
 }

@@ -12,6 +12,7 @@
     "test:watch": "vitest",
     "test:ui": "vitest run src/tests/ui",
     "test:a11y": "vitest run src/tests/accessibility",
+    "benchmark": "vite-node scripts/benchmark.ts",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
     "verify:premium": "python \"C:/Users/im061/.codex/plugins/cache/openai-curated-remote/frontend-design-premium/1.4.0/skills/frontend-design-premium/scripts/audit_project.py\" . --mode strict --no-write"
@@ -43,6 +44,7 @@
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.18.2",
     "vite": "^6.0.5",
+    "vite-node": "^2.1.9",
     "vitest": "^2.1.8"
   }
 }

@@ -63,6 +63,11 @@ function parseNonNegativeInteger(value: unknown, label: string): number {
   return value as number;
 }
 
+function parseBoolean(value: unknown, label: string): boolean {
+  if (typeof value !== "boolean") throw new TypeError(`${label} must be true or false.`);
+  return value;
+}
+
 function parseBitboard(value: unknown, label: string) {
   if (!isRecord(value) || typeof value.low !== "string" || typeof value.high !== "string") {
     throw new TypeError(`${label} is not a serialized bitboard.`);
@@ -127,7 +132,7 @@ export function deserializePosition(input: unknown): GamePosition {
         rulesData.noCapturePlyLimit,
         "No-capture ply limit",
       ),
-      noLegalMovesIsDraw: Boolean(rulesData.noLegalMovesIsDraw),
+      noLegalMovesIsDraw: parseBoolean(rulesData.noLegalMovesIsDraw, "No-legal-moves draw rule"),
       startingPlayer: parsePlayer(rulesData.startingPlayer, "Starting player"),
       targetCorners: {
         blue: parseNonNegativeInteger(rulesData.targetCorners.blue, "Blue target corner"),

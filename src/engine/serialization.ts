@@ -87,7 +87,7 @@ function parseResult(value: unknown): GameResult {
   throw new TypeError("Position result has an unsupported type or reason.");
 }
 
-export function deserializePosition(input: string | unknown): GamePosition {
+export function deserializePosition(input: unknown): GamePosition {
   let data: unknown = input;
   if (typeof input === "string") {
     try {
@@ -136,7 +136,7 @@ export function deserializePosition(input: string | unknown): GamePosition {
     },
   };
   const validation = validatePosition(position, { allowCompleted: true });
-  if (!validation.valid) throw new TypeError(validation.errors.map((error) => error.message).join(" "));
+  if (!validation.valid)
+    throw new TypeError(validation.errors.map((error) => error.message).join(" "));
   return position;
 }
-

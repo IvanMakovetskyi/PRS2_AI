@@ -42,9 +42,7 @@ describe("Bitboard81", () => {
     expect(toSquares(orBoards(left, right))).toEqual([0, 1, 64, 80]);
     expect(toSquares(xorBoards(left, right))).toEqual([0, 1, 80]);
     expect(populationCount(notBoard(EMPTY_BITBOARD))).toBe(81);
-    expect(boardsEqual(bitboard((1n << 70n) - 1n, 1 << 18), notBoard(EMPTY_BITBOARD))).toBe(
-      false,
-    );
+    expect(boardsEqual(bitboard((1n << 70n) - 1n, 1 << 18), notBoard(EMPTY_BITBOARD))).toBe(false);
   });
 
   it("masks constructor input and rejects invalid raw words", () => {
@@ -70,12 +68,14 @@ describe("precomputed adjacency", () => {
       const rank = Math.floor(square / 9);
       const edgeCount = Number(file === 0 || file === 8) + Number(rank === 0 || rank === 8);
       const expected = edgeCount === 2 ? 3 : edgeCount === 1 ? 5 : 8;
-      expect(populationCount(ADJACENCY_MASKS[square]!)).toBe(expected);
-      for (const neighbor of toSquares(ADJACENCY_MASKS[square]!)) {
+      const mask = ADJACENCY_MASKS[square];
+      expect(mask).toBeDefined();
+      if (!mask) throw new Error(`Missing adjacency mask for ${square}.`);
+      expect(populationCount(mask)).toBe(expected);
+      for (const neighbor of toSquares(mask)) {
         expect(Math.abs((neighbor % 9) - file)).toBeLessThanOrEqual(1);
         expect(Math.abs(Math.floor(neighbor / 9) - rank)).toBeLessThanOrEqual(1);
       }
     }
   });
 });
-

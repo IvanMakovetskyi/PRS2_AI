@@ -62,6 +62,10 @@ export class GameSession {
     return this.current;
   }
 
+  get initialPosition(): Readonly<GamePosition> {
+    return this.initial;
+  }
+
   get history(): readonly MoveRecord[] {
     return this.records;
   }
@@ -227,4 +231,3 @@ export class GameSession {
     return session;
   }
 }
-

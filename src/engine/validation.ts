@@ -1,11 +1,7 @@
 import { assertValidBitboard, boardsEqual, EMPTY_BITBOARD, orBoards } from "./bitboard";
 import { allPieceBoardEntries } from "./constants";
 import { calculateGameResult } from "./game-status";
-import type {
-  GamePosition,
-  PositionValidationError,
-  PositionValidationResult,
-} from "./types";
+import type { GamePosition, PositionValidationError, PositionValidationResult } from "./types";
 
 export interface ValidationOptions {
   allowCompleted?: boolean;
@@ -31,7 +27,12 @@ export function validatePosition(
   let seen = EMPTY_BITBOARD;
   for (const entry of entries) {
     const combined = orBoards(seen, entry.board);
-    if (!boardsEqual(combined, { low: seen.low ^ entry.board.low, high: seen.high ^ entry.board.high })) {
+    if (
+      !boardsEqual(combined, {
+        low: seen.low ^ entry.board.low,
+        high: seen.high ^ entry.board.high,
+      })
+    ) {
       errors.push({
         code: "overlapping-pieces",
         message: `At least one square is occupied more than once (found at ${entry.player} ${entry.piece}).`,
@@ -41,7 +42,8 @@ export function validatePosition(
     seen = combined;
   }
 
-  if (position.activePlayer !== "blue" && position.activePlayer !== "red") {
+  const activePlayer: unknown = position.activePlayer;
+  if (activePlayer !== "blue" && activePlayer !== "red") {
     errors.push({ code: "invalid-player", message: "Active player must be blue or red." });
   }
   if (
@@ -60,10 +62,10 @@ export function validatePosition(
     if (result.type !== "ongoing") {
       errors.push({
         code: "completed-position",
-        message: "The edited position is already complete. Move a target piece or lower the draw counter.",
+        message:
+          "The edited position is already complete. Move a target piece or lower the draw counter.",
       });
     }
   }
   return { valid: errors.length === 0, errors };
 }
-

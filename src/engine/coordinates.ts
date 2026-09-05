@@ -26,7 +26,9 @@ export function rankOf(square: Square): number {
 
 export function squareToCoordinate(square: Square): string {
   assertSquare(square);
-  return `${FILES[fileOf(square)]}${rankOf(square) + 1}`;
+  const file = FILES[fileOf(square)];
+  if (!file) throw new RangeError("Square has no valid file.");
+  return `${file}${rankOf(square) + 1}`;
 }
 
 export function coordinateToSquare(coordinate: string): Square {
@@ -41,7 +43,6 @@ export function coordinateToSquare(coordinate: string): Square {
 
 export function assertSquare(square: number): asserts square is Square {
   if (!isValidSquare(square)) {
-    throw new RangeError(`Square ${square} is outside the 9×9 board.`);
+    throw new RangeError(`Square ${String(square)} is outside the 9×9 board.`);
   }
 }
-

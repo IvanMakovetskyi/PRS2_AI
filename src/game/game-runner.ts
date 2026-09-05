@@ -1,6 +1,6 @@
 import { clonePosition, generateLegalMoves } from "../engine";
 import type { PlayerController } from "../players";
-import { GameSession } from "./game-session";
+import type { GameSession } from "./game-session";
 
 export interface GameRunnerControllers {
   blue: PlayerController;
@@ -34,4 +34,3 @@ export class GameRunner {
     this.abortController?.abort();
   }
 }
-
